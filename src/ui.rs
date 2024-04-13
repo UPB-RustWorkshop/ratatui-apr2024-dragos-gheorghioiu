@@ -1,7 +1,7 @@
 use crate::app::App;
 use ratatui::{
     layout::Alignment,
-    style::{Color, Modifier, Style, Stylize},
+    style::{Color, Modifier, Style},
     text::Line,
     widgets::{Block, Borders, List, ListState, Paragraph},
     Frame,
@@ -14,16 +14,19 @@ pub fn render(app: &mut App, frame: &mut Frame) {
     // - https://docs.rs/ratatui/latest/ratatui/widgets/index.html
     // - https://github.com/ratatui-org/ratatui/tree/master/examples
 
-    // TODO: Split the layout
     // let [area1, area2, area3 ...] =
     let mut area_list = frame.size();
-    area_list.width = area_list.width / 8;
+    area_list.width /= 8;
 
     let mut info_area = frame.size();
-    info_area.width = info_area.width - area_list.width;
+    info_area.width -= area_list.width;
     info_area.x = area_list.width;
 
-    let cities: Vec<String> = app.cities.clone();
+    let cities: Vec<Line> = app
+        .cities
+        .iter()
+        .map(|city| Line::from(city.as_str()))
+        .collect();
 
     let list_component = List::new(cities)
         .block(Block::default().title("Cities").borders(Borders::ALL))
@@ -40,8 +43,6 @@ pub fn render(app: &mut App, frame: &mut Frame) {
 
     // TODO: render the list of cities
     frame.render_stateful_widget(list_component, area_list, &mut state);
-
-    // TODO: Create the weather info component
 
     let weather_info_text = Paragraph::new(format!(
         "City: {}\nWeather: {}\nTemperature: {}°C",

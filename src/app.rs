@@ -15,6 +15,12 @@ pub struct App {
     pub index_selected: usize,
 }
 
+impl Default for App {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl App {
     /// Constructs a new instance of [`App`].
     pub fn new() -> Self {

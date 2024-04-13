@@ -35,7 +35,7 @@ pub async fn get_temperature(city: String) -> CityInfo {
     let json: serde_json::Value = serde_json::from_str(&body).unwrap();
     let weather = json["weather"]["description"].as_str().unwrap();
     let temperature = json["conditions"]["temp"].as_f64().unwrap();
-    let city_info = CityInfo {
+    let city_info: CityInfo = CityInfo {
         name: city,
         weather: (weather.to_string(), temperature.to_string()),
     };
