@@ -57,7 +57,13 @@ impl EventHandler {
                   }
                   Some(Ok(evt)) = crossterm_event => {
                     match evt {
-                      _ => {}
+                        CrosstermEvent::Key(key) => {
+                            _sender.send(Event::Key(key)).unwrap();
+                        }
+                        CrosstermEvent::Mouse(mouse) => {
+                            _sender.send(Event::Mouse(mouse)).unwrap();
+                        }
+                        _ => {}
                     }
                   }
                 }

@@ -52,6 +52,10 @@ impl<B: Backend> Tui<B> {
     pub fn draw(&mut self, app: &mut App) {
         // [`Draw`]: ratatui::Terminal::draw
         // [`rendering`]: crate::ui:render
+        let res = ratatui::Terminal::draw(&mut self.terminal, |f| ui::render(app, f));
+        if let Err(err) = res {
+            eprintln!("Failed to draw the terminal: {}", err);
+        }
     }
 
     /// Resets the terminal interface.
